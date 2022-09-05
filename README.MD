@@ -8,3 +8,5 @@
 
 ---
 ### Небольшой пример работы.
+
+![crm](https://user-images.githubusercontent.com/101246310/188454299-5cfa3658-2790-45bd-b815-a00a6e23ae95.gif)
