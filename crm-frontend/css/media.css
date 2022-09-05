@@ -1,0 +1,173 @@
+@media (max-width: 1120px) {
+  .header__container,
+  .container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .clients__table-head.table__thead .table__thead-column {
+    padding: 8px 10px;
+  }
+
+  .clients__table_item:not(:last-child) {
+    margin-right: 7px;
+    margin-bottom: 7px;
+  }
+}
+
+@media (max-width: 960px) {
+  .clients__table-btn-container,
+  .data-container {
+    flex-direction: column;
+  }
+
+  .table>tbody {
+    vertical-align: middle;
+  }
+
+  .data {
+    margin: 0;
+  }
+
+  .clients__table_change {
+    margin: 0;
+    margin-bottom: 5px;
+  }
+
+  .clients__table_btn {
+    text-align: left;
+  }
+
+
+  .column-lastChanges,
+  .column-createData {
+    width: 105px;
+  }
+
+  .column-contacts {
+    width: 100px;
+  }
+
+  .clients__table-body .clients__table-row .clients__table-column {
+    padding: .5rem .5rem;
+  }
+
+  .column-actions__btn-container {
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;    
+  }
+}
+
+@media (max-width: 742px) {
+  .clients__container {
+    padding-right: 10px;
+    padding-left: 10px;
+    overflow-x: auto;
+  }
+
+  .clients__table {
+    width: 728px;
+  }
+
+  .modal {
+    --bs-modal-width: 300px;
+  }
+
+  .modal-content {
+    position: relative;
+    max-width: 300px;
+  }
+
+  .modal-dialog {
+    max-width: var(--bs-modal-width);
+    margin-right: auto;
+    margin-left: auto;
+  }
+
+  .btn-close {
+    position: absolute;
+    top: 9px;
+    right: 9px;
+  }
+
+  .modal-header {
+    padding: 30px 15px 0 15px;
+  }
+
+  .modal-body {
+    padding: 0 15px;
+    padding-bottom: 20px;
+  }
+
+  .modal-contact {
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    padding: 25px 15px;
+    margin-bottom: 25px;
+  }
+
+  .choices[data-type*=select-one]::after {
+    right: 10px;
+  }
+
+  .new-client__modal-body {
+    margin-bottom: 0;
+  }
+
+  .modal-delete-title {
+    padding-left: 50px;
+  }
+
+  .modal-delete-text {
+    padding: 0;
+  }
+
+  .select-container {
+    padding: 0 15px;
+    display: flex;
+    width: 100%;
+  }
+
+  .select {
+    max-width: 110px;
+    width: 100%;
+  }
+
+  .select-input {
+    max-width: 160px;
+    width: 100%;
+  }
+}
+
+@media (max-width: 470px) {
+  .container {
+    padding: 0 10px;
+    margin-bottom: 40px;
+  }
+
+  .clients__table-body.loading::after {
+    margin: auto 0;
+    left: 35vw;
+  }
+  
+  .title {
+    font-size: 18px;
+    line-height: 25px;
+  }
+
+  .header__input-container {
+    display: none;
+  }
+
+  .header__container {
+    padding: 8px;
+  }
+
+  .header__logo {
+    margin: 0 auto;
+    height: 24px;
+    width: 24px;
+  }
+}

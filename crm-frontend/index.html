@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="CRM-система управления контактными данными клиентов.">
+  <title>CRM-система</title>
+
+  <!-- fonts -->
+  <link rel="preload" href="fonts/OpenSans-Bold.woff2" as="font">
+  <link rel="preload" href="fonts/OpenSans-Bold.woff" as="font">
+  <link rel="preload" href="fonts/OpenSans-Regular.woff2" as="font">
+  <link rel="preload" href="fonts/OpenSans-Regular.woff" as="font">
+  <link rel="preload" href="fonts/OpenSans-SemiBold.woff2" as="font">
+  <link rel="preload" href="fonts/OpenSans-SemiBold.woff" as="font">
+
+  <!-- main styles -->
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/choices.min.css">
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/media.css">
+</head>
+<body>
+  <header class="header">
+    <div class="header__container container">
+      <div class="d-flex header__content">
+        <a class="header__logo" href="#">
+          <img src="img/logo.png" alt="Логотип CRM-системы">
+        </a>
+        <div class="header__input-container">
+          <input class="header__input" type="text" placeholder="Введите запрос">
+          <div class="search-results d-none">
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+  
+  <main>
+    <section class="section clients">
+      <div class="container clients__container">
+        <h1 class="title clients__title">
+          Клиенты
+        </h1>
+        <table class="clients__table table height">
+          <thead class="clients__table-head table__thead">
+            <th class="table__thead-column" data-column="id">
+              <button data-column-btn="id" class="clients__table_btn clients__table_filter-btn btn">
+                <span class="clients__table-txt">ID</span>
+                <img class="clients__table-img" src="img/arrow.png" alt="arrw img">
+              </button>
+            </th>
+
+            <th class="table__thead-column" data-column="fio">
+              <button data-column-btn="fio" class="clients__table_btn clients__table_filter-btn btn">
+                Фамилия Имя Отчество
+                <img class="clients__table-img" src="img/arrow.png" alt="arrw img">
+                <span class="clients__table-txt txt-small">А-Я</span>
+              </button>
+            </th>
+            <th class="table__thead-column" data-column="createData">
+              <button data-column-btn="createdAt" class="clients__table_btn clients__table_filter-btn btn">
+                Дата и время создания
+                <img class="clients__table-img" src="img/arrow.png" alt="arrw img">
+              </button>
+            </th>
+
+            <th class="table__thead-column" data-column="lastChanges">
+              <button data-column-btn="updatedAt" class="clients__table_btn clients__table_filter-btn btn">
+                Последние изменения
+                <img class="clients__table-img" src="img/arrow.png" alt="arrw img">
+              </button>
+            </th>
+
+            <th class="table__thead-column" data-column="contacts">
+              <button data-column-btn="contacts" class="clients__table_btn btn">Контакты</button>
+            </th>
+
+            <th class="table__thead-column" data-column="actions">
+              <button data-column-btn="actions" class="clients__table_btn btn">Действия</button>
+            </th>
+          </thead>
+
+          <tbody class="clients__table-body" id="clients-list">
+
+          </tbody>
+        </table>
+      </div>
+      
+      <button class="clients__add add-btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#newClient">
+        <svg class="add-btn__svg" width="23" height="16" viewBox="0 0 23 16" fill="transparent" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14.5 8C16.71 8 18.5 6.21 18.5 4C18.5 1.79 16.71 0 14.5 0C12.29 0 10.5 1.79 10.5 4C10.5 6.21 12.29 8 14.5 8ZM5.5 6V3H3.5V6H0.5V8H3.5V11H5.5V8H8.5V6H5.5ZM14.5 10C11.83 10 6.5 11.34 6.5 14V16H22.5V14C22.5 11.34 17.17 10 14.5 10Z" fill="#9873FF"/>
+        </svg>
+        Добавить клиента
+      </button>
+    </section>
+
+    <!-- MODAL WINDOW -->
+
+    <!-- Добавить нового клиента -->
+    <div class="modal fade new-client" id="newClient" tabindex="-1" aria-labelledby="Добавить нового клиента" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-header new-client__modal-header">
+            <h5 class="modal-title" id="newClientLabel">Новый клиент</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <form class="modal-body new-client__modal-body d-flex" id="new-client-form">
+            <div class="input-surname-container d-flex input-container">
+              <input class="new-client__input new-client__input-surname" id="input-surname" type="text" required>
+              <label class="input-label input-surname-label" for="input-surname">Фамилия</label>
+            </div>
+
+            <div class="input-name-container d-flex input-container">
+              <input class="new-client__input new-client__input-name" id="input-name" type="text" required>
+              <label class="input-label input-name-label" for="input-name">Имя</label>
+            </div>
+
+            <div class="input-patronymic-container d-flex input-container">
+              <input class="new-client__input new-client__input-patronymic" id="input-patronymic" type="text" >
+              <label class="input-label input-patronymic-label" for="input-patronymic">Отчество</label>
+            </div>
+          </form>
+
+          <div class="new-client-modal add-new-contact d-flex ">
+            <button class="add-new-contact-btn add-contact-btn btn d-flex">
+              <svg class="add-new-contact-svg" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.00001 3.66659C6.63334 3.66659 6.33334 3.96659 6.33334 4.33325V6.33325H4.33334C3.96668 6.33325 3.66668 6.63325 3.66668 6.99992C3.66668 7.36659 3.96668 7.66659 4.33334 7.66659H6.33334V9.66659C6.33334 10.0333 6.63334 10.3333 7.00001 10.3333C7.36668 10.3333 7.66668 10.0333 7.66668 9.66659V7.66659H9.66668C10.0333 7.66659 10.3333 7.36659 10.3333 6.99992C10.3333 6.63325 10.0333 6.33325 9.66668 6.33325H7.66668V4.33325C7.66668 3.96659 7.36668 3.66659 7.00001 3.66659ZM7.00001 0.333252C3.32001 0.333252 0.333344 3.31992 0.333344 6.99992C0.333344 10.6799 3.32001 13.6666 7.00001 13.6666C10.68 13.6666 13.6667 10.6799 13.6667 6.99992C13.6667 3.31992 10.68 0.333252 7.00001 0.333252ZM7.00001 12.3333C4.06001 12.3333 1.66668 9.93992 1.66668 6.99992C1.66668 4.05992 4.06001 1.66659 7.00001 1.66659C9.94001 1.66659 12.3333 4.05992 12.3333 6.99992C12.3333 9.93992 9.94001 12.3333 7.00001 12.3333Z" fill="#9873FF"/>
+              </svg>
+              Добавить контакт
+            </button>
+          </div>
+
+          <div class="modal-footer new-client__modal-footer">
+            <div class="contact-error d-none">
+              Ошибка: вы добавили максимальное количество контактов (10)!
+            </div>
+
+            <button type="button" class="new-client__save btn-primary">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.00008 6.03996C1.00008 8.82344 3.2566 11.08 6.04008 11.08C8.82356 11.08 11.0801 8.82344 11.0801 6.03996C11.0801 3.25648 8.82356 0.999956 6.04008 0.999956C5.38922 0.999956 4.7672 1.1233 4.196 1.348" stroke="#B89EFF" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"/>
+              </svg>Сохранить
+            </button>
+            <button type="button" class="new-client__close btn" data-bs-dismiss="modal">Отмена</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Удалить клиента -->
+    <div class="modal fade delete-client" id="deleteClient" tabindex="-1" aria-labelledby="Удалить клиента" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header modal-delete-header"> 
+            <h5 class="modal-title modal-delete-title" id="deleteClientLabel">Удалить клиента</h5>
+            <button type="button" class="btn-close modal-delete-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body modal-body-delete-сlient">            
+            <p class="modal-delete-text">Вы действительно хотите удалить данного клиента?</p>
+          </div>
+
+          <div class="modal-footer modal-footer-delete-сlient">
+            <button class="modal-btn-delete-client btn" type="button">Удалить</button>
+            <button type="button" class="btn modal-delete-cancel" data-bs-dismiss="modal">Отмена</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Изменить данные о клиенте -->
+    <div class="modal fade change-client" id="changeClientInfo" tabindex="-1" aria-labelledby="Изменить данные о клиенте" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content p-0">
+          <div class="modal-header">
+            <div class="d-flex align-items-baseline">
+              <h5 class="modal-title title-modal-change" id="changeModalLabel">Изменить данные</h5>
+              <span class="modal-id"></span>
+            </div>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="modal-body">
+            <ul class="list-group-flush">
+              <li class="list-group-item">
+                <span class="modal-input-text">
+                  Фамилия <span class="star">*</span>
+                </span>
+                <input class="modal-change-input modal-change-surname form-control" type="text" name="modal-change-surname">
+              </li>
+              <li class="list-group-item">
+                <span class="modal-input-text">
+                  Имя <span class="star">*</span>
+                </span>
+                <input class="modal-change-input modal-change-name form-control" type="text" name="modal-change-name">
+              </li>
+              <li class="list-group-item">
+                <span class="modal-input-text">
+                  Отчество
+                </span>
+                <input class="modal-change-input modal-change-lastname form-control" type="text" name="modal-change-lastname">
+              </li>
+            </ul>
+          </div>
+
+          <div class="change-client-modal add-new-contact d-flex ">
+            <button class="add-new-contact-btn change-modal-add-new-contact-btn add-contact-btn btn d-flex">
+              <svg class="add-new-contact-svg" width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M7.00001 3.66659C6.63334 3.66659 6.33334 3.96659 6.33334 4.33325V6.33325H4.33334C3.96668 6.33325 3.66668 6.63325 3.66668 6.99992C3.66668 7.36659 3.96668 7.66659 4.33334 7.66659H6.33334V9.66659C6.33334 10.0333 6.63334 10.3333 7.00001 10.3333C7.36668 10.3333 7.66668 10.0333 7.66668 9.66659V7.66659H9.66668C10.0333 7.66659 10.3333 7.36659 10.3333 6.99992C10.3333 6.63325 10.0333 6.33325 9.66668 6.33325H7.66668V4.33325C7.66668 3.96659 7.36668 3.66659 7.00001 3.66659ZM7.00001 0.333252C3.32001 0.333252 0.333344 3.31992 0.333344 6.99992C0.333344 10.6799 3.32001 13.6666 7.00001 13.6666C10.68 13.6666 13.6667 10.6799 13.6667 6.99992C13.6667 3.31992 10.68 0.333252 7.00001 0.333252ZM7.00001 12.3333C4.06001 12.3333 1.66668 9.93992 1.66668 6.99992C1.66668 4.05992 4.06001 1.66659 7.00001 1.66659C9.94001 1.66659 12.3333 4.05992 12.3333 6.99992C12.3333 9.93992 9.94001 12.3333 7.00001 12.3333Z" fill="#9873FF"/>
+              </svg>
+              Добавить контакт
+            </button>
+          </div>
+          
+          <div class="modal-footer change-client__modal-footer d-flex">
+            <div class="contact-error d-none">
+              Ошибка: вы добавили максимальное количество контактов (10)!
+            </div>
+
+            <button class="modal-btn-save btn" type="button">
+              <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1.00008 6.03996C1.00008 8.82344 3.2566 11.08 6.04008 11.08C8.82356 11.08 11.0801 8.82344 11.0801 6.03996C11.0801 3.25648 8.82356 0.999956 6.04008 0.999956C5.38922 0.999956 4.7672 1.1233 4.196 1.348" stroke="#B89EFF" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"/>
+              </svg>
+              Сохранить</button>
+            <button class="modal-btn-delete btn" type="button" data-bs-toggle="modal"
+              data-bs-target="#deleteClient">Удалить
+              клиента</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- MAIN SCRIPTS -->
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/choices.min.js"></script>
+  <script src="js/select.js"></script>
+  <script src="js/popper.min.js"></script>
+  <script src="js/tippy-bundle.umd.min.js"></script>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

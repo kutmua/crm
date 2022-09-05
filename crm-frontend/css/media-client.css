@@ -1,0 +1,65 @@
+@media (max-width: 960px) {
+  .card-contacts-title {
+    margin-bottom: 10px;
+    font-size: 20px;
+  }
+  .client__date-creation, 
+  .client__date-last-edit {
+    margin-right: 10px;
+  }
+  .list-item-type {
+    font-size: 13px;
+  }
+  .list-item-value {
+    font-size: 13px;
+  }
+}
+
+@media (max-width: 742px) {
+  .client-container {
+    flex-wrap: wrap;
+  }
+  .bio-conatiner {
+    margin-right: 0;
+    margin-bottom: 20px;
+  }
+}
+
+@media (max-width: 470px) {
+  .container {
+    padding: 0 10px;
+    margin-bottom: 40px;
+  }
+
+  .card-contacts-title {
+    margin-bottom: 0px;
+  }
+
+  .header__container {
+    padding: 8px;
+    margin-bottom: 20px;
+  }
+  .header__logo {
+    height: 24px;
+    width: 24px;
+  }
+  .btn-back-page {
+    padding: 3px 5px;
+    font-size: 12px;
+  }
+
+  .client__photo {
+    margin-bottom: 20px;
+    max-width: 200px;
+    height: 200px;
+    background-position: 50% 13px;
+    background-size: 190px 190px;
+  }
+  .client__full-name {
+    font-size: 15px;
+  }
+  .client__date-creation, 
+  .client__date-last-edit {
+    margin-right: 0;
+  }
+}
