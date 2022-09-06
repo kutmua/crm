@@ -139,6 +139,10 @@
               Ошибка: вы добавили максимальное количество контактов (10)!
             </div>
 
+            <div class="contact-value-error _new-client-modal d-none">
+              Ошибка: есть незаполненные обязательныe поля! Удалите пустые контакты или добавьте информацию в соответствующие поля.
+            </div>
+
             <button type="button" class="new-client__save btn-primary">
               <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M1.00008 6.03996C1.00008 8.82344 3.2566 11.08 6.04008 11.08C8.82356 11.08 11.0801 8.82344 11.0801 6.03996C11.0801 3.25648 8.82356 0.999956 6.04008 0.999956C5.38922 0.999956 4.7672 1.1233 4.196 1.348" stroke="#B89EFF" stroke-width="2" stroke-miterlimit="10" stroke-linecap="round"/>
@@ -189,13 +193,13 @@
                 <span class="modal-input-text">
                   Фамилия <span class="star">*</span>
                 </span>
-                <input class="modal-change-input modal-change-surname form-control" type="text" name="modal-change-surname">
+                <input class="modal-change-input modal-change-surname form-control" type="text" required name="modal-change-surname">
               </li>
               <li class="list-group-item">
                 <span class="modal-input-text">
                   Имя <span class="star">*</span>
                 </span>
-                <input class="modal-change-input modal-change-name form-control" type="text" name="modal-change-name">
+                <input class="modal-change-input modal-change-name form-control" type="text" required name="modal-change-name">
               </li>
               <li class="list-group-item">
                 <span class="modal-input-text">
@@ -218,6 +222,10 @@
           <div class="modal-footer change-client__modal-footer d-flex">
             <div class="contact-error d-none">
               Ошибка: вы добавили максимальное количество контактов (10)!
+            </div>
+
+            <div class="contact-value-error _change-client-modal d-none">
+              Ошибка: есть незаполненные обязательныe поля! Удалите пустые контакты или добавьте информацию в соответствующие поля.
             </div>
 
             <button class="modal-btn-save btn" type="button">

@@ -747,7 +747,9 @@ header {
   line-height: 14px;
 }
 
-.new-client__input.error {
+.new-client__input.error,
+.modal-input.form-control.error,
+.modal-change-input.error {
   -webkit-box-shadow: 0px 5px 5px -5px rgba(255, 0, 0, 0.6);
   -moz-box-shadow: 0px 5px 5px -5px rgba(255, 0, 0, 0.6);
   box-shadow: 0px 5px 5px -5px rgba(255, 0, 0, 0.6);
@@ -860,7 +862,8 @@ header {
   color: var(--dark-grey);
 }
 
-.contact-error {
+.contact-error,
+.contact-value-error {
   margin: 0;
   margin-bottom: 9px;
   padding: 0;
