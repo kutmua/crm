@@ -18,7 +18,9 @@ document.addEventListener('DOMContentLoaded', function(){
 
         return data;
       }
-      else console.log('что-то пошло не так');
+      else {
+        window.location.replace("404.html");
+      }
 
     }
     /* ---------------------------------------------------------------------------- */
@@ -33,7 +35,9 @@ document.addEventListener('DOMContentLoaded', function(){
       if (response.ok) {
         window.location.reload();
       }
-      else console.log('что-то пошло не так');
+      else {
+        window.location.replace("404.html");
+      }
     }
     /* ---------------------------------------------------------------------------- */
 
@@ -45,7 +49,9 @@ document.addEventListener('DOMContentLoaded', function(){
       if (response.ok) {
         window.location.reload();
       }
-      else console.log('что-то пошло не так');
+      else {
+        window.location.replace("404.html");
+      }
     }
     /* ---------------------------------------------------------------------------- */
 
@@ -59,7 +65,10 @@ document.addEventListener('DOMContentLoaded', function(){
       if (response.ok) {
         window.location.reload();
       }
-      else console.log('что-то пошло не так');
+      else {
+        // window.location.replace("404.html");
+        console.log('NO');
+      }
     }
     /* ---------------------------------------------------------------------------- */
 
@@ -135,12 +144,36 @@ document.addEventListener('DOMContentLoaded', function(){
     }
     /* ---------------------------------------------------------------------------- */
 
+    /* correctPhoneInfo() функция проверки полей контактов на наличие данных */
+    function correctPhoneInfo(array){
+      let check = Boolean;
+
+      array.forEach(elem => {
+        if (elem.value.trim() !== '') {
+          elem.classList.remove('error');
+          check = true;
+        }
+        else {
+          elem.classList.add('error');
+          check = false;
+        }
+      })
+      return check
+
+    }
+    /* ---------------------------------------------------------------------------- */
+
     /* clear() функция отчистки полей после создания */
-    function clear(array, selectContainers) {
+    function clear(array, selectContainers, arrayContacts) {
       array.forEach(elem => {
         elem.value = '';
         elem.classList.remove('error');
         elem.nextSibling.nextElementSibling.classList.remove('focus');
+      })
+
+      arrayContacts.forEach(elem => {
+        elem.value = '';
+        elem.classList.remove('error');
       })
 
       if (selectContainers.length !== 0){
@@ -196,8 +229,15 @@ document.addEventListener('DOMContentLoaded', function(){
     /* deleteErrors() функция удаления ошибок после закрытия модального окна */
     function deleteErrors() {
       const inputs = document.querySelectorAll('.new-client__input');
+      const inputsChangeModal = document.querySelectorAll('.modal-change-input');
 
-      inputs.forEach(input=>{
+      inputs.forEach(input => {
+        input.value = '';
+        input.classList.remove('error');
+        input.nextSibling.nextElementSibling.classList.remove('focus');
+      })
+
+      inputsChangeModal.forEach(input => {
         input.classList.remove('error');
       })
 
@@ -205,6 +245,10 @@ document.addEventListener('DOMContentLoaded', function(){
       document.querySelectorAll('.contact-error').forEach(elem => {
         elem.classList.add('d-none');
       });
+
+      /* скрываю ошибку, если было закрыто модальное окно */
+      document.querySelector('.contact-value-error._new-client-modal').classList.add('d-none');
+      document.querySelector('.contact-value-error._change-client-modal').classList.add('d-none');
 
       document.querySelectorAll('.add-contact-btn').forEach(btn => {
         btn.removeAttribute('disable');
@@ -214,7 +258,7 @@ document.addEventListener('DOMContentLoaded', function(){
       /* удаление margin-bottom у контейнера с кнопкой добавления контакта (нужно для PixelPerfect)  */
       document.querySelectorAll('.add-new-contact').forEach(body => {
         body.classList.remove('m-b-8');
-      })
+      });
     }
   /* ---------------------------------------------------------------------------- */
 
@@ -518,7 +562,6 @@ document.addEventListener('DOMContentLoaded', function(){
       )
       tableBody.append(tr);
 
-
       // повторная инициализация фреймворков для корректного отображения тултипов и т.п.
       initFrameworks();
     }
@@ -538,9 +581,10 @@ document.addEventListener('DOMContentLoaded', function(){
     async function addNewClient(){
       const newClientInputs = document.querySelectorAll('.new-client__input');
       let clientsContactsContainer = document.querySelectorAll('.select-container.new-client-modal');
+      let contactsInput = document.querySelectorAll('.modal-input.form-control');
       let newClient = {}; // объект для данных о клиенте, потом передастся в основной массив
 
-      if (correctData(newClientInputs)) {
+      if (correctData(newClientInputs) && correctPhoneInfo(contactsInput)) {
         let clientsContactsArray = [];
         let contactObj = {
           contactName: String,
@@ -566,7 +610,22 @@ document.addEventListener('DOMContentLoaded', function(){
         }
 
         await createClientInfo(newClient);
-        clear(newClientInputs, clientsContactsContainer);
+        setTimeout(()=>{
+          deleteErrors();
+          clear(newClientInputs, clientsContactsContainer, contactsInput);
+        }, 300)
+      }
+      else if (correctData(newClientInputs) === false && correctPhoneInfo(contactsInput) === false) {
+        const error = document.querySelector('.contact-value-error._new-client-modal');
+        const neighborContainer = error.parentNode.parentNode.childNodes[5];
+        neighborContainer.classList.add('m-b-8');
+        error.classList.remove('d-none');
+      }
+      else if (correctData(newClientInputs) === false || correctPhoneInfo(contactsInput) === false) {
+        const error = document.querySelector('.contact-value-error._new-client-modal');
+        const neighborContainer = error.parentNode.parentNode.childNodes[5];
+        neighborContainer.classList.add('m-b-8');
+        error.classList.remove('d-none');
       }
     }
     /* ---------------------------------------------------------------------------- */
@@ -1052,18 +1111,22 @@ document.addEventListener('DOMContentLoaded', function(){
 
     btnsClose.forEach(btn => {
       btn.addEventListener('click', ()=>{
-        deleteAllContacts();
-        deleteErrors();
-        document.getElementById('changeClientInfo').removeAttribute('data-id');
+        setTimeout(()=>{
+          deleteAllContacts();
+          deleteErrors();
+          document.getElementById('changeClientInfo').removeAttribute('data-id');
+        }, 300)
       })
     })
 
     window.addEventListener('click', (event)=>{
       if(event.target.classList.contains('fade')){
         if (!event.target.classList.contains('show')) {
-          deleteAllContacts();
-          deleteErrors();
-          document.getElementById('changeClientInfo').removeAttribute('data-id');
+          setTimeout(()=>{
+            deleteAllContacts();
+            deleteErrors();
+            document.getElementById('changeClientInfo').removeAttribute('data-id');
+          }, 300)
         }
       }
     })
@@ -1073,6 +1136,8 @@ document.addEventListener('DOMContentLoaded', function(){
     const btnSaveChangeInfo = document.querySelector('.modal-btn-save');
 
     btnSaveChangeInfo.addEventListener('click',() => {
+      const inputs = document.querySelectorAll('.modal-change-input');
+      const contactsInputs = document.querySelectorAll('.modal-input.form-control');
       let id = Number(document.querySelector('.change-client').dataset.id);
       let contactsName = document.querySelectorAll('.select.select-custom.choices__input');
       let contactsValue = document.querySelectorAll('.modal-input.form-control');
@@ -1083,22 +1148,36 @@ document.addEventListener('DOMContentLoaded', function(){
         contactValue: String
       };
 
-      for (let i = 0; contactsName.length > i; i++) {
-        contactObj = {
-          type: contactsName[i].firstChild.value,
-          value: contactsValue[i].value
+      if (correctData(inputs) && correctPhoneInfo(contactsInputs)){
+        for (let i = 0; contactsName.length > i; i++) {
+          contactObj = {
+            type: contactsName[i].firstChild.value,
+            value: contactsValue[i].value
+          }
+          clientsContactsArray.push(contactObj);
         }
-        clientsContactsArray.push(contactObj);
-      }
 
-      clientObj = {
-        name: `${document.querySelector('.modal-change-name').value.trim()}`,
-        surname: `${document.querySelector('.modal-change-surname').value.trim()}`,
-        lastName: `${document.querySelector('.modal-change-lastname').value.trim()}`,
-        contacts: clientsContactsArray
-      }
+        clientObj = {
+          name: `${document.querySelector('.modal-change-name').value.trim()}`,
+          surname: `${document.querySelector('.modal-change-surname').value.trim()}`,
+          lastName: `${document.querySelector('.modal-change-lastname').value.trim()}`,
+          contacts: clientsContactsArray
+        }
 
-      changeClientInfo(clientObj, id);
+        changeClientInfo(clientObj, id);
+      }
+      else if (correctData(inputs) === false && correctPhoneInfo(contactsInputs) === false) {
+        const error = document.querySelector('.contact-value-error._change-client-modal');
+        const neighborContainer = error.parentNode.parentNode.childNodes[5];
+        neighborContainer.classList.add('m-b-8');
+        error.classList.remove('d-none');
+      }
+      else if (correctData(inputs) === false || correctPhoneInfo(contactsInputs) === false) {
+        const error = document.querySelector('.contact-value-error._change-client-modal');
+        const neighborContainer = error.parentNode.parentNode.childNodes[5];
+        neighborContainer.classList.add('m-b-8');
+        error.classList.remove('d-none');
+      }
     })
     /* ---------------------------------------------------------------------------- */
 
@@ -1143,9 +1222,7 @@ document.addEventListener('DOMContentLoaded', function(){
         searchClient(value);
       }, 300)
     })
-    /* ---------------------------------------------------------------------------- */
   /* ---------------------------------------------------------------------------- */
-
 
   window.onload = async function() {
     const data = await loadInfo();

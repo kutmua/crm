@@ -15,7 +15,14 @@ async function getInfoClient(id) {
 /* createClientPage() функция создания карточки клиента */
 async function createClientPage(){
   const id = Number(document.location.search.slice(11));
-  let client = await getInfoClient(id);
+  const client = await getInfoClient(id);
+
+  if(client){
+    document.querySelector('.client-container').classList.remove('loading');
+  }
+  else {
+    window.location.replace("404.html");
+  }
 
   const fullName = document.querySelector('.client__full-name');
 
@@ -24,11 +31,11 @@ async function createClientPage(){
 
   const dateLastEdit = document.querySelector('.client__date-last-edit');
     const dateLastEditTime = document.querySelector('.client__date-last-edit-time');
-  
+
   const btnCopyLink = document.querySelector('.btn-copy-link');
 
   const contactsList = document.querySelector('.contacts__list');
-  
+
   /* Наполнение контентом */
   fullName.textContent = `${client.surname} ${client.name} ${client.lastName}`;
 
@@ -62,13 +69,13 @@ async function createClientPage(){
       const contactsListItem = document.createElement('li');
         const itemType = document.createElement('span');
         const itemValue = document.createElement('a');
-  
+
       contactsListItem.classList.add('contacts__list-item', 'd-flex');
         itemType.classList.add('list-item-type','d-flex');
         itemValue.classList.add('list-item-value');
         itemValue.addEventListener('click', (event) => {
           let link = event.currentTarget.textContent;
-  
+
           navigator.clipboard.writeText(link)
           .then(() => {
             document.querySelector('.copy-success').classList.remove('hide');
@@ -84,7 +91,7 @@ async function createClientPage(){
             console.log('error!');
           })
         })
-  
+
         if (contact.type === 'VK') {
           itemType.innerHTML = `${svg.svgVk} ${contact.type}`;
         }
@@ -101,7 +108,7 @@ async function createClientPage(){
           itemType.innerHTML = `${svg.svgAdditionalContact} ${contact.type}`;
         }
         itemValue.textContent = `${contact.value}`;
-        
+
       contactsListItem.append(itemType);
       contactsListItem.append(itemValue);
       contactsList.append(contactsListItem);
@@ -110,7 +117,7 @@ async function createClientPage(){
   else {
     const contactsListItem = document.createElement('li');
     contactsListItem.classList.add('contacts__list-item','no-contacts','d-flex');
-    
+
     contactsListItem.textContent = 'У клиента нет контактов!';
     contactsList.append(contactsListItem);
   }
@@ -153,5 +160,5 @@ btnBackPage.addEventListener('click', () => {
 
 window.onload = async function() {
   createClientPage();
-  initMessages()
+  initMessages();
 }

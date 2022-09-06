@@ -3,7 +3,7 @@
     margin-bottom: 10px;
     font-size: 20px;
   }
-  .client__date-creation, 
+  .client__date-creation,
   .client__date-last-edit {
     margin-right: 10px;
   }
@@ -29,6 +29,10 @@
   .container {
     padding: 0 10px;
     margin-bottom: 40px;
+  }
+
+  .client-container.loading::before {
+    margin: 0 auto;
   }
 
   .card-contacts-title {
@@ -58,7 +62,7 @@
   .client__full-name {
     font-size: 15px;
   }
-  .client__date-creation, 
+  .client__date-creation,
   .client__date-last-edit {
     margin-right: 0;
   }
