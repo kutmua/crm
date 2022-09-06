@@ -3,6 +3,7 @@ import * as svg from './svg.js';
 document.addEventListener('DOMContentLoaded', function(){
   const CRM_URL = 'http://localhost:3000';
   let countContact = 0;
+  let parentId;
 
   /* СЕРВЕРНЫЕ ФУНКЦИИ -----------------*/
 
@@ -11,9 +12,14 @@ document.addEventListener('DOMContentLoaded', function(){
       const response = await fetch( `${CRM_URL}/api/clients`, {
         method: 'GET'
       })
-      const data = await response.json();
 
-      return data;
+      if (response.ok) {
+        const data = await response.json();
+
+        return data;
+      }
+      else console.log('что-то пошло не так');
+
     }
     /* ---------------------------------------------------------------------------- */
 
@@ -24,6 +30,10 @@ document.addEventListener('DOMContentLoaded', function(){
         headers: {'Content-Type': 'applicatinon/json'},
         body: JSON.stringify(newClientObj)
       })
+      if (response.ok) {
+        window.location.reload();
+      }
+      else console.log('что-то пошло не так');
     }
     /* ---------------------------------------------------------------------------- */
 
@@ -32,16 +42,24 @@ document.addEventListener('DOMContentLoaded', function(){
       const response = await fetch(`${CRM_URL}/api/clients/${id}`, {
         method: 'DELETE'
       })
+      if (response.ok) {
+        window.location.reload();
+      }
+      else console.log('что-то пошло не так');
     }
     /* ---------------------------------------------------------------------------- */
 
-    /* deleteClientInfo() функция изменения информации о клиенте в базе данных */
+    /* changeClientInfo() функция изменения информации о клиенте в базе данных */
     async function changeClientInfo(clientObj, id){
       const response = await fetch (`${CRM_URL}/api/clients/${id}`, {
         method: 'PATCH',
         headers: {'Content-Type': 'applicatinon/json'},
         body: JSON.stringify(clientObj)
       })
+      if (response.ok) {
+        window.location.reload();
+      }
+      else console.log('что-то пошло не так');
     }
     /* ---------------------------------------------------------------------------- */
 
@@ -60,7 +78,6 @@ document.addEventListener('DOMContentLoaded', function(){
     async function loadingPage() {
       const table = document.querySelector('.clients__table.table');
       const tableBody = document.getElementById('clients-list'); // для реализации загрузки
-      const data = await loadInfo();
 
       tableBody.classList.add('loading');
 
@@ -68,18 +85,15 @@ document.addEventListener('DOMContentLoaded', function(){
         method: 'GET'
       })
 
-      if (response.ok && data.length !== 0) {
-        setTimeout(()=>{
-          table.classList.remove('height');
-          tableBody.classList.remove('loading');
-        },'1000')
+      if (response.ok) {
+        table.classList.remove('height');
+        tableBody.classList.remove('loading');
         return true
       }
       else {
-        setTimeout(()=>{
-          table.classList.remove('height');
-          tableBody.classList.remove('loading');
-        },'1000')
+        console.log('NO');
+        table.classList.remove('height');
+        tableBody.classList.remove('loading');
         return false
       }
 
@@ -228,17 +242,12 @@ document.addEventListener('DOMContentLoaded', function(){
 
       /* обработчик событий для кнопок удаления клиента */
       const deleteBtnsClients = document.querySelectorAll('.clients__table_delete');
-      const deleteBtnMain = document.querySelector('.modal-btn-delete-client');
-      let parentId;
 
       deleteBtnsClients.forEach(btn => {
         btn.addEventListener('click', async (event)=>{
           await loadingChanges(btn);
           parentId = Number(event.currentTarget.parentNode.parentNode.parentNode.dataset.targetId);
         })
-      })
-      deleteBtnMain.addEventListener('click', ()=>{
-        deleteClientInfo(parentId);
       })
 
       /* обработчик событий для кнопок изменить клиента */
@@ -508,6 +517,7 @@ document.addEventListener('DOMContentLoaded', function(){
         tdActions
       )
       tableBody.append(tr);
+
 
       // повторная инициализация фреймворков для корректного отображения тултипов и т.п.
       initFrameworks();
@@ -993,12 +1003,20 @@ document.addEventListener('DOMContentLoaded', function(){
 
 
   /* ОБРАБОТЧИКИ СОБЫТИЙ */
-    const saveNewClientBtn = document.querySelector('.new-client__save'); // кнопка сохранить клиента
+    /* обработчик событий для кнопки удаления клиента */
+    const deleteBtnMain = document.querySelector('.modal-btn-delete-client');
+
+    deleteBtnMain.addEventListener('click', ()=>{
+      deleteClientInfo(parentId);
+    })
+    /* ---------------------------------------------------------------------------- */
 
     /* обработчик событий для кнопки сохранения клиента */
+    const saveNewClientBtn = document.querySelector('.new-client__save'); // кнопка сохранить клиента
+
     saveNewClientBtn.addEventListener('click', async () =>{
       await loadingChanges(saveNewClientBtn);
-      addNewClient();
+      await addNewClient();
     });
     /* ---------------------------------------------------------------------------- */
 
@@ -1039,13 +1057,14 @@ document.addEventListener('DOMContentLoaded', function(){
         document.getElementById('changeClientInfo').removeAttribute('data-id');
       })
     })
-    /* ---------------------------------------------------------------------------- */
 
     window.addEventListener('click', (event)=>{
       if(event.target.classList.contains('fade')){
-        deleteAllContacts();
-        deleteErrors();
-        document.getElementById('changeClientInfo').removeAttribute('data-id');
+        if (!event.target.classList.contains('show')) {
+          deleteAllContacts();
+          deleteErrors();
+          document.getElementById('changeClientInfo').removeAttribute('data-id');
+        }
       }
     })
     /* ---------------------------------------------------------------------------- */
@@ -1125,13 +1144,12 @@ document.addEventListener('DOMContentLoaded', function(){
       }, 300)
     })
     /* ---------------------------------------------------------------------------- */
-
   /* ---------------------------------------------------------------------------- */
 
 
   window.onload = async function() {
     const data = await loadInfo();
-    let loading = await loadingPage();
+    const loading = await loadingPage();
 
     if (loading === true){
       createTableHtml(data);
