@@ -33,7 +33,17 @@ document.addEventListener('DOMContentLoaded', function(){
         body: JSON.stringify(newClientObj)
       })
       if (response.ok) {
-        window.location.reload();
+        const data = await loadInfo();
+        const loading = await loadingPage();
+
+        if (loading === true){
+          await createTableHtml(data);
+          document.querySelector('[data-column-btn="id"]').classList.add('ascending');
+          ascendingSort(document.querySelector('[data-column-btn="id"]'));
+        }
+        else {
+          createTableHtml(data);
+        }
       }
       else {
         window.location.replace("404.html");
@@ -47,7 +57,17 @@ document.addEventListener('DOMContentLoaded', function(){
         method: 'DELETE'
       })
       if (response.ok) {
-        window.location.reload();
+        const data = await loadInfo();
+        const loading = await loadingPage();
+
+        if (loading === true){
+          createTableHtml(data);
+          document.querySelector('[data-column-btn="id"]').classList.add('ascending');
+          ascendingSort(document.querySelector('[data-column-btn="id"]'));
+        }
+        else {
+          createTableHtml(data);
+        }
       }
       else {
         window.location.replace("404.html");
@@ -63,11 +83,20 @@ document.addEventListener('DOMContentLoaded', function(){
         body: JSON.stringify(clientObj)
       })
       if (response.ok) {
-        window.location.reload();
+        const data = await loadInfo();
+        const loading = await loadingPage();
+
+        if (loading === true){
+          createTableHtml(data);
+          document.querySelector('[data-column-btn="id"]').classList.add('ascending');
+          ascendingSort(document.querySelector('[data-column-btn="id"]'));
+        }
+        else {
+          createTableHtml(data);
+        }
       }
       else {
-        // window.location.replace("404.html");
-        console.log('NO');
+        window.location.replace("404.html");
       }
     }
     /* ---------------------------------------------------------------------------- */
@@ -100,7 +129,6 @@ document.addEventListener('DOMContentLoaded', function(){
         return true
       }
       else {
-        console.log('NO');
         table.classList.remove('height');
         tableBody.classList.remove('loading');
         return false
@@ -225,6 +253,7 @@ document.addEventListener('DOMContentLoaded', function(){
       })
       /* ---------------------------------------------------------------------------- */
     }
+    /* ---------------------------------------------------------------------------- */
 
     /* deleteErrors() функция удаления ошибок после закрытия модального окна */
     function deleteErrors() {
@@ -260,6 +289,16 @@ document.addEventListener('DOMContentLoaded', function(){
         body.classList.remove('m-b-8');
       });
     }
+    /* ---------------------------------------------------------------------------- */
+
+    /* closeModal() функция закрытия модального окна (искусственное нажатие на кнопку закрытия модального окна) */
+    async function closeModal() {
+      const btnsClose = document.querySelectorAll('[data-bs-dismiss="modal"]');
+      btnsClose.forEach(btn => {
+        btn.click();
+      })
+    }
+
   /* ---------------------------------------------------------------------------- */
 
 
@@ -609,11 +648,13 @@ document.addEventListener('DOMContentLoaded', function(){
           contacts: clientsContactsArray
         }
 
-        await createClientInfo(newClient);
+        deleteErrors();
+        clear(newClientInputs, clientsContactsContainer, contactsInput);
+        await closeModal();
+
         setTimeout(()=>{
-          deleteErrors();
-          clear(newClientInputs, clientsContactsContainer, contactsInput);
-        }, 300)
+          createClientInfo(newClient);
+        }, 500);
       }
       else if (correctData(newClientInputs) === false && correctPhoneInfo(contactsInput) === false) {
         const error = document.querySelector('.contact-value-error._new-client-modal');
@@ -1066,7 +1107,10 @@ document.addEventListener('DOMContentLoaded', function(){
     const deleteBtnMain = document.querySelector('.modal-btn-delete-client');
 
     deleteBtnMain.addEventListener('click', ()=>{
-      deleteClientInfo(parentId);
+      closeModal();
+      setTimeout(()=>{
+        deleteClientInfo(parentId);
+      }, 500);
     })
     /* ---------------------------------------------------------------------------- */
 
@@ -1163,8 +1207,10 @@ document.addEventListener('DOMContentLoaded', function(){
           lastName: `${document.querySelector('.modal-change-lastname').value.trim()}`,
           contacts: clientsContactsArray
         }
-
-        changeClientInfo(clientObj, id);
+        closeModal();
+        setTimeout(()=>{
+          changeClientInfo(clientObj, id);
+        }, 500);
       }
       else if (correctData(inputs) === false && correctPhoneInfo(contactsInputs) === false) {
         const error = document.querySelector('.contact-value-error._change-client-modal');
