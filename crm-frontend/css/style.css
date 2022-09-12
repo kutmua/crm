@@ -287,19 +287,33 @@ header {
   color: var(--grey);
 }
 
-.clients__table_btn.ascending .clients__table-img {
-  transform: rotate(180deg);
+.clients__table_btn.clients__table_btn-contacts.btn,
+.clients__table_btn.clients__table_btn-actions.btn {
+  cursor: default;
 }
 
-.clients__table_btn.filter .clients__table-img {
-  transform: rotate(180deg);
+.clients__table_btn.clients__table_btn-contacts.btn:hover,
+.clients__table_btn.clients__table_btn-actions.btn:hover {
+  color: var(--grey);
 }
 
-.clients__table-txt {
+.clients__table_btn.ascending,
+.clients__table_btn.descending {
   color: var(--purple);
 }
 
-.clients__table-img {
+
+.clients__table_btn.ascending .clients__table-svg {
+  transform: rotate(180deg);
+}
+
+.clients__table_btn.filter .clients__table-svg {
+  transform: rotate(180deg);
+}
+
+.clients__table-svg {
+  width: 8px;
+  height: 8px;
   transition: transform .2s linear;
 }
 
